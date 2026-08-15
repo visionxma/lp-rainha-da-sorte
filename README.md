@@ -2,6 +2,8 @@
 
 Landing page mobile-first do Rainha da Sorte, aplicativo de análise de resultados de roleta.
 
+**No ar:** https://rainhadasorte.jogadorpro.com/
+
 ## Estrutura
 
 ```
@@ -23,7 +25,28 @@ python3 -m http.server 8000
 
 ## Rastreamento
 
-Google Tag Manager `GTM-PVBZQ4FW` (script no `<head>` e `noscript` no início do `<body>`).
+### Pixel & Link Manager
+
+Primeiro script do `<head>`, antes de qualquer outro rastreador. Ele carrega os pixels
+cadastrados no painel para o domínio atual e intercepta os links de WhatsApp/Telegram,
+mandando-os para o rotacionador de grupos.
+
+- Domínio cadastrado: `rainhadasorte.jogadorpro.com`
+  (site id `4d97e554-41c1-4025-b5be-6a5fe8e0cfb2`)
+- Pixels cadastrados para o domínio: **nenhum** até o momento — enquanto não houver,
+  o console mostra `Pixels encontrados: 0` e nenhum pixel é carregado.
+
+O interceptador chama `stopImmediatePropagation()` nos links do Telegram. Por isso o
+listener do `dataLayer` (abaixo) está registrado na **fase de captura** — do contrário
+o evento `clique_cta` deixaria de disparar.
+
+### Google Tag Manager
+
+Container `GTM-PVBZQ4FW`: script no `<head>` (depois do Pixel Manager) e `noscript` no
+início do `<body>`.
+
+> Não cadastre esse mesmo container como pixel `google_tag_manager` no painel: ele
+> carregaria duas vezes e os eventos contariam em dobro.
 
 Cada CTA dispara um evento no `dataLayer`:
 
