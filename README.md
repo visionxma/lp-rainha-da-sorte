@@ -40,6 +40,11 @@ O interceptador chama `stopImmediatePropagation()` nos links do Telegram. Por is
 listener do `dataLayer` (abaixo) está registrado na **fase de captura** — do contrário
 o evento `clique_cta` deixaria de disparar.
 
+**Não remova a proteção anti-cache** do snippet: `cache: 'no-store'`, o cabeçalho
+`Cache-Control: no-cache` e o parâmetro `&_=timestamp` (função `bust()`) em todas as
+consultas e no redirect. Sem isso, o Safari/iOS pode servir links de grupo antigos
+guardados em cache.
+
 ### Google Tag Manager
 
 Container `GTM-PVBZQ4FW`: script no `<head>` (depois do Pixel Manager) e `noscript` no
